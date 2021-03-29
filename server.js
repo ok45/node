@@ -1,12 +1,23 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
-require("./routes/routes.js")(app);
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
+const todos = require("./controllers/todoController.js");
+
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+)
+app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.json({ message: "funkcni" })});
+    res.json({ message: "funkcni" })
+});
+
+app.post("/todos", todos.create);
+app.get("/todos", todos.findAll);
+app.put("/todos/:todoId", todos.update);
+app.delete("/todos/:todoId", todos.delete);
+
 app.listen(3000, () => {
-    console.log("Server is running on port 3000.");  
-    });
+    console.log("Server is running on port 3000.");
+});
